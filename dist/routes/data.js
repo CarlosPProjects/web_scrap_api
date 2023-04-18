@@ -22,8 +22,27 @@ router.get("/data", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const response = yield axios_1.default.get("https://precioaceitedeoliva.net/");
         const $ = cheerio_1.default.load(response.data);
-        const data = $("table").eq(0).text().replace(/\s\s+/g, " ");
-        res.send(data);
+        const tableTr = $("table").eq(0).find("tr");
+        const tableStructured = {
+            title: tableTr.eq(0).find("th").text(),
+            date: tableTr.eq(1).find("th").eq(0).text(),
+            header: tableTr.eq(1).find("th").eq(1).text(),
+            items: [
+                {
+                    name: tableTr.eq(2).find("td").eq(0).text(),
+                    price: tableTr.eq(2).find("td").eq(1).text(),
+                },
+                {
+                    name: tableTr.eq(3).find("td").eq(0).text(),
+                    price: tableTr.eq(3).find("td").eq(1).text(),
+                },
+                {
+                    name: tableTr.eq(4).find("td").eq(0).text(),
+                    price: tableTr.eq(4).find("td").eq(1).text(),
+                },
+            ],
+        };
+        res.send(tableStructured);
     }
     catch (e) {
         console.log(e);
