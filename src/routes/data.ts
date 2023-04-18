@@ -28,7 +28,8 @@ router.get("/data", async (req: Request, res: Response) => {
         },
       ],
     };
-    res.send(tableStructured);
+    console.log(tableStructured);
+    res.json(tableStructured);
   } catch (e) {
     console.log(e);
     res.status(500).send("Error al obtener los datos");
